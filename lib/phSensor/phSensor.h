@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
-#include "PIN_MAP.h"
+// #include "PIN_MAP.h"
 
 class phSensor {
 public:
@@ -16,6 +16,7 @@ public:
   void update(unsigned long ms);
 
   float read();
+  bool started;
 
 
 private:

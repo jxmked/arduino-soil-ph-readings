@@ -1,13 +1,17 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include "PIN_MAP.h"
+// #include "PIN_MAP.h"
 #include <LiquidCrystal_I2C.h>
 #include "phSensor.h"
 #include "alkalineServo.h"
 #include "waterValve.h"
-#include "DEFINITION.h"
+// #include "DEFINITION.h"
 #include "TimeInterval.h"
 
+
+#define ACIDIC_THRESHOLD 6.2 // Below 6.2, Too much acidity
+
+#define ALKALINE_THRESHOLD 6.8 // Above 6.8, Too much Alkaline
 
 
 
@@ -40,6 +44,9 @@ void loop() {
   if (phInterval.marked())
     phs.update(ms);
 
+    
+  if (!phs.started) return;
+
   if (!phs.isAvailable()) {
     // pH Sensor not available
 
@@ -54,6 +61,7 @@ void loop() {
 
     return;
   }
+
 
   // Refresh Screen Every 200 ms
   if(!lcd_hz.marked()) {

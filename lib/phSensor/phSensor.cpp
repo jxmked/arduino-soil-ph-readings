@@ -3,14 +3,18 @@
 #include <SoftwareSerial.h>
 
 // #include "PIN_MAP.h"
-#include "DEFINITION.h"
+// #include "DEFINITION.h"
 
 #define MODBUS_RX 2
 #define MODBUS_TX 3
 #define MODBUS_A 7
 #define MODBUS_B 8
 
+
+#define MODBUS_BAUD_RATE 9600
+
 phSensor::phSensor() :
+  started(false),
   values(),
   sSerial(MODBUS_RX, MODBUS_TX) {
 
@@ -23,6 +27,7 @@ void phSensor::begin() {
   sSerial.begin(MODBUS_BAUD_RATE);
 
   BUSMode(true);
+  started = true;
 
 }
 
