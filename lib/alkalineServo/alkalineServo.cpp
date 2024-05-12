@@ -1,12 +1,8 @@
 #include "alkalineServo.h"
 
+#include "PIN_MAP.h"
 #include <Arduino.h>
 #include <Servo.h>
-#include "PIN_MAP.h"
-
-
-
-
 
 alkalineServo::alkalineServo() :
   active(false),

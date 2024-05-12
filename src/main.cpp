@@ -1,80 +1,90 @@
 #include <Arduino.h>
-#include <SoftwareSerial.h>
 #include <Wire.h>
-
+#include "PIN_MAP.h"
 #include <LiquidCrystal_I2C.h>
+#include "phSensor.h"
+#include "alkalineServo.h"
+#include "waterValve.h"
+#include "DEFINITION.h"
+#include "TimeInterval.h"
 
 
-#define RE 8
-#define DE 7
 
-const byte ph[] = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x01, 0x84, 0x0A };
-//const byte ph[] = { 0x01, 0x06, 0x07, 0xD1, 0x00, 0x02, 0x59, 0x46 };
-byte values[11];
-SoftwareSerial mod(2, 3);
+
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
+TimeInterval lcd_hz(200, 0, true);
 
+phSensor phs;
+alkalineServo als;
+waterValve wav;
 
+TimeInterval phInterval(15000, 0, true);
 
 void setup() {
-  Serial.begin(38400);
-
-  while (!Serial);
-
-  pinMode(2, INPUT);
-  pinMode(3, OUTPUT);
-  mod.begin(9600);
-  pinMode(RE, OUTPUT);
-  pinMode(DE, OUTPUT);
 
   lcd.begin(16, 2);
   lcd.backlight();
 
 
-  delay(3000);
+  phs.begin();
+  als.begin();
+  wav.begin();
+
 }
 
 void loop() {
+  const auto ms = millis();
 
-  // if (mod.isListening()) {
-  //   lcd.clear();
-  //   lcd.setCursor(0, 0);
-  //   lcd.print("Listening");
-  //   //return;
-  // }
+  // Update soil pH sensor every 15 sec
+  if (phInterval.marked())
+    phs.update(ms);
 
+  if (!phs.isAvailable()) {
+    // pH Sensor not available
 
-  digitalWrite(DE, HIGH);
-  digitalWrite(RE, HIGH);
-  delay(10);
+    if (lcd_hz.marked()) {
+      lcd.clear();
+      lcd.setCursor(3, 0);
+      lcd.print("pH Sensor");
 
-  lcd.clear();
-  if (mod.write(ph, sizeof(ph)) == 8) {
-
-    Serial.println(mod.available());
-
-
-    digitalWrite(DE, LOW);
-    digitalWrite(RE, LOW);
-    lcd.setCursor(0, 1);
-    for (byte i = 0; i < 11; i++) {
-      values[i] = mod.read();
-      char un = ((values[i] & 0xF0) >> 4) + 'A';
-      char ln = (values[i] & 0x0F) + 'O';
-
-      lcd.print(un);
-      lcd.print(ln);
-
+      lcd.setCursor(1, 1);
+      lcd.print("Not Available");
     }
 
+    return;
   }
-  float soil_ph = float(values[4]) / 10;
-  // Serial.print("Soil Ph: ");
-  // Serial.println(soil_ph, 1);
-  // lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print(soil_ph);
 
-  delay(300);
+  // Refresh Screen Every 200 ms
+  if(!lcd_hz.marked()) {
+    return;
+  }
+
+  const float phVal = phs.read();
+
+
+  lcd.clear();
+
+  if (phVal >= ALKALINE_THRESHOLD) {
+    lcd.setCursor(3, 1);
+    lcd.print("< Alkaline");
+    wav.open();
+    als.close();
+  } else if (phVal <= ACIDIC_THRESHOLD) {
+    lcd.setCursor(3, 1);
+    lcd.print("< ACIDITY");
+    wav.close();
+    als.open();
+  } else {
+    lcd.setCursor(5, 1);
+    lcd.print("Normal");
+    wav.close();
+    als.close();
+  }
+
+  lcd.setCursor(2, 0);
+  lcd.print("Soil pH:");
+  lcd.print(phVal);
+
+  
 }
