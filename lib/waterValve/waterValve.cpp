@@ -1,6 +1,9 @@
 #include "waterValve.h"
+
 #include <Arduino.h>
-#include "PIN_MAP.h"
+// #include "PIN_MAP.h"
+
+#define SOLENOID_VALVE_PIN 12 // Target Relay
 
 waterValve::waterValve():
 active(false) {
@@ -13,7 +16,7 @@ void waterValve::begin() {
 }
 
 void waterValve::update(unsigned long ms) {
-    digitalWrite(SOLENOID_VALVE_PIN, active ? ACTIVATED : DEACTIVATED);
+    digitalWrite(SOLENOID_VALVE_PIN,  active ? ACTIVATED : DEACTIVATED);
 }
 
 void waterValve::close() {

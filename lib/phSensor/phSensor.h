@@ -4,6 +4,7 @@
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include "PIN_MAP.h"
 
 class phSensor {
 public:
