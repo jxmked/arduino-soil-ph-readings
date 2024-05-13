@@ -19,15 +19,26 @@ TimeInterval phInterval(3000, 0, true);
 
 void setup() {
 
+  /**
+   * You can put potentiometer at pin A0
+   * to create fake value of soil ph value.
+   * Its useful for demonstration.
+   *
+   * Just put some connection between negative and pin 9
+   * to activate.
+  */
+  pinMode(9, INPUT_PULLUP);
+
   lcd.begin(16, 2);
   lcd.backlight();
 
+  // Bottom-Right
+  lcd.setCursor(8, 1);
+  lcd.print("Loading.");
 
   phs.begin();
   als.begin();
   wav.begin();
-
-
 
   delay(3000);
 
@@ -67,9 +78,14 @@ void loop() {
     return;
   }
 
-  const float phVal = phs.read();
-  // const float potVal = float(analogRead(A0)) / 1023;
-  // const float phVal = (2 * potVal) + 5;
+  float phVal = 0.0;
+
+  if (digitalRead(9) == LOW) {
+    const float potVal = float(analogRead(A0)) / 1023;
+    phVal = (2 * potVal) + 5;
+  } else {
+    phVal = phs.read();
+  }
 
   lcd.clear();
 
