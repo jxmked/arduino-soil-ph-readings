@@ -17,6 +17,7 @@ waterValve wav(PIN_MAP.SOLENOID_VALVE_PIN);
 
 TimeInterval phInterval(15000, 0, true);
 
+#define potPin A0
 
 
 void setup() {
@@ -38,27 +39,35 @@ void loop() {
   if (phInterval.marked())
     phs.update(ms);
 
-  if (!phs.isAvailable()) {
-    // pH Sensor not available
+  // if (!phs.isAvailable()) {
+  //   // pH Sensor not available
 
-    if (lcd_hz.marked()) {
-      lcd.clear();
-      lcd.setCursor(3, 0);
-      lcd.print("pH Sensor");
+  //   if (lcd_hz.marked()) {
+  //     lcd.clear();
+  //     lcd.setCursor(3, 0);
+  //     lcd.print("pH Sensor");
 
-      lcd.setCursor(1, 1);
-      lcd.print("Not Available");
-    }
+  //     lcd.setCursor(1, 1);
+  //     lcd.print("Not Available");
+  //   }
 
-    return;
-  }
+  //   return;
+  // }
+
+
+  
+  wav.update(ms);
+  als.update(ms);
 
   // Refresh Screen Every 200 ms
   if(!lcd_hz.marked()) {
     return;
   }
 
-  const float phVal = phs.read();
+  // const float phVal = phs.read();
+  const float potVal = float(analogRead(potPin)) / 1023;
+  const float phVal = (2 * potVal) + 5;
+
 
 
   lcd.clear();
@@ -83,9 +92,5 @@ void loop() {
   lcd.setCursor(2, 0);
   lcd.print("Soil pH:");
   lcd.print(phVal);
-
-  wav.update(ms);
-  als.update(ms);
-
   
 }

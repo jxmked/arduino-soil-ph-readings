@@ -4,6 +4,7 @@
 
 alkalineServo::alkalineServo(uint8_t PIN) :
   active(false),
+  lastState(false),
   servo(),
   _PIN(PIN) { }
 
@@ -13,14 +14,18 @@ void alkalineServo::begin() {
 }
 
 void alkalineServo::update(unsigned long ms) {
+  // if(active == lastState) return;
+
   servo.write(active ? OPEN : CLOSED);
+
+  lastState = active;
 }
 
 void alkalineServo::open() {
-  active = OPEN;
+  active = true;
 }
 
 void alkalineServo::close() {
-  active = CLOSED;
+  active = false;
 }
 

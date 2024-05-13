@@ -15,11 +15,13 @@ public:
 
 private:
   bool active;
+  bool lastState;
   Servo servo;
   uint8_t _PIN;
 
-  const int OPEN = 180;
-  const int CLOSED = 0;
+  // Jittering issue. Let it jitter when open. :)
+  const int OPEN = 0;
+  const int CLOSED = 180;
 
 };
 

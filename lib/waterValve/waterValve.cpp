@@ -17,9 +17,9 @@ void waterValve::update(unsigned long ms) {
 }
 
 void waterValve::close() {
-  active = DEACTIVATED;
+  active = false;
 }
 
 void waterValve::open() {
-  active = ACTIVATED;
+  active = true;
 }
