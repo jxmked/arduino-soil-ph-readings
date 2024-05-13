@@ -11,6 +11,7 @@ alkalineServo::alkalineServo(uint8_t PIN) :
 
 void alkalineServo::begin() {
   servo.attach(_PIN);
+  servo.write(CLOSED);
 }
 
 void alkalineServo::update(unsigned long ms) {

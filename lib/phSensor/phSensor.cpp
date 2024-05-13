@@ -2,6 +2,8 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
+#include <Wire.h>
+
 phSensor::phSensor(uint8_t MRX, uint8_t MTX, uint8_t MA, uint8_t MB, int BAUD_RATE) :
   values(),
   sSerial(MRX, MTX),
@@ -14,12 +16,15 @@ phSensor::phSensor(uint8_t MRX, uint8_t MTX, uint8_t MA, uint8_t MB, int BAUD_RA
 }
 
 void phSensor::begin() {
+
+  Serial.begin(BAUD_RATE);
+  sSerial.begin(BAUD_RATE);
+
   pinMode(MA, OUTPUT);
   pinMode(MB, OUTPUT);
 
-  sSerial.begin(BAUD_RATE);
 
-  BUSMode(true);
+  BUSMode(false);
 
 }
 
@@ -31,12 +36,21 @@ bool phSensor::isAvailable() {
 void phSensor::update(unsigned long ms) {
   BUSMode(true);
 
-  if (sSerial.write(TX_DATA, sizeof(TX_DATA)) == 8) {
-    BUSMode(false);
+  delay(10);
 
-    for (byte i = 0; i < 11; i++) {
-      values[i] = sSerial.read();
-    }
+  if (sSerial.write(TX_DATA, sizeof(TX_DATA)) == 8) {
+
+    BUSMode(false);
+    delay(10);
+
+
+      for (byte i = 0; i < 11; i++) {
+        values[i] = sSerial.read();
+        Serial.print(values[i], HEX);
+
+      }
+
+      Serial.println();
   }
 }
 
