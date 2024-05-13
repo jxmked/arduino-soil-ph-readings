@@ -17,9 +17,6 @@ waterValve wav(PIN_MAP.SOLENOID_VALVE_PIN);
 
 TimeInterval phInterval(15000, 0, true);
 
-#define potPin A0
-
-
 void setup() {
 
   lcd.begin(16, 2);
@@ -39,22 +36,20 @@ void loop() {
   if (phInterval.marked())
     phs.update(ms);
 
-  // if (!phs.isAvailable()) {
-  //   // pH Sensor not available
+  if (!phs.isAvailable()) {
+    // pH Sensor not available
 
-  //   if (lcd_hz.marked()) {
-  //     lcd.clear();
-  //     lcd.setCursor(3, 0);
-  //     lcd.print("pH Sensor");
+    if (lcd_hz.marked()) {
+      lcd.clear();
+      lcd.setCursor(3, 0);
+      lcd.print("pH Sensor");
 
-  //     lcd.setCursor(1, 1);
-  //     lcd.print("Not Available");
-  //   }
+      lcd.setCursor(1, 1);
+      lcd.print("Not Available");
+    }
 
-  //   return;
-  // }
-
-
+    return;
+  }
   
   wav.update(ms);
   als.update(ms);
@@ -64,17 +59,17 @@ void loop() {
     return;
   }
 
-  // const float phVal = phs.read();
-  const float potVal = float(analogRead(potPin)) / 1023;
-  const float phVal = (2 * potVal) + 5;
-
-
+  const float phVal = phs.read();
 
   lcd.clear();
+  
+  lcd.setCursor(2, 0);
+  lcd.print("Soil pH:");
+  lcd.print(phVal);
 
   if (phVal >= ALKALINE_THRESHOLD) {
     lcd.setCursor(3, 1);
-    lcd.print("< Alkaline");
+    lcd.print("< ALKALINE");
     wav.open();
     als.close();
   } else if (phVal <= ACIDIC_THRESHOLD) {
@@ -88,9 +83,4 @@ void loop() {
     wav.close();
     als.close();
   }
-
-  lcd.setCursor(2, 0);
-  lcd.print("Soil pH:");
-  lcd.print(phVal);
-  
 }
