@@ -8,18 +8,16 @@
 #include "DEFINITION.h"
 #include "TimeInterval.h"
 
-
-
-
-
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 TimeInterval lcd_hz(200, 0, true);
 
-phSensor phs;
-alkalineServo als;
-waterValve wav;
+phSensor phs(PIN_MAP.MODBUS_RX,PIN_MAP.MODBUS_TX, PIN_MAP.MODBUS_A, PIN_MAP.MODBUS_B, MODBUS_BAUD_RATE);
+alkalineServo als(PIN_MAP.SERVO_PIN);
+waterValve wav(PIN_MAP.SOLENOID_VALVE_PIN);
 
 TimeInterval phInterval(15000, 0, true);
+
+
 
 void setup() {
 
@@ -85,6 +83,9 @@ void loop() {
   lcd.setCursor(2, 0);
   lcd.print("Soil pH:");
   lcd.print(phVal);
+
+  wav.update(ms);
+  als.update(ms);
 
   
 }

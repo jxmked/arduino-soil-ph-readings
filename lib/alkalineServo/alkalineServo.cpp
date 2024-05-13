@@ -1,17 +1,15 @@
 #include "alkalineServo.h"
-
-#include "PIN_MAP.h"
 #include <Arduino.h>
 #include <Servo.h>
 
-alkalineServo::alkalineServo() :
+alkalineServo::alkalineServo(uint8_t PIN) :
   active(false),
-  servo() { }
+  servo(),
+  _PIN(PIN) { }
 
 
 void alkalineServo::begin() {
-  servo.attach(SERVO_PIN);
-
+  servo.attach(_PIN);
 }
 
 void alkalineServo::update(unsigned long ms) {

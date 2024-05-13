@@ -6,7 +6,7 @@
 
 class alkalineServo {
 public:
-  alkalineServo();
+  alkalineServo(uint8_t PIN);
   void begin();
   void update(unsigned long ms);
   void open();
@@ -16,6 +16,7 @@ public:
 private:
   bool active;
   Servo servo;
+  uint8_t _PIN;
 
   const int OPEN = 180;
   const int CLOSED = 0;

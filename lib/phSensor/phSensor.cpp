@@ -2,20 +2,22 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#include "PIN_MAP.h"
-#include "DEFINITION.h"
-
-phSensor::phSensor() :
+phSensor::phSensor(uint8_t MRX, uint8_t MTX, uint8_t MA, uint8_t MB, int BAUD_RATE) :
   values(),
-  sSerial(MODBUS_RX, MODBUS_TX) {
+  sSerial(MRX, MTX),
+  MRX(MRX),
+  MTX(MTX),
+  MA(MA),
+  MB(MB),
+  BAUD_RATE(BAUD_RATE) {
 
 }
 
 void phSensor::begin() {
-  pinMode(MODBUS_A, OUTPUT);
-  pinMode(MODBUS_B, OUTPUT);
+  pinMode(MA, OUTPUT);
+  pinMode(MB, OUTPUT);
 
-  sSerial.begin(MODBUS_BAUD_RATE);
+  sSerial.begin(BAUD_RATE);
 
   BUSMode(true);
 
@@ -44,10 +46,10 @@ float phSensor::read() {
 
 void phSensor::BUSMode(bool isHigh) {
   if (isHigh) {
-    digitalWrite(MODBUS_A, HIGH);
-    digitalWrite(MODBUS_B, HIGH);
+    digitalWrite(MA, HIGH);
+    digitalWrite(MB, HIGH);
   } else {
-    digitalWrite(MODBUS_A, LOW);
-    digitalWrite(MODBUS_B, LOW);
+    digitalWrite(MA, LOW);
+    digitalWrite(MB, LOW);
   }
 }

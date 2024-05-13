@@ -5,7 +5,7 @@
 
 class  waterValve {
 public:
-  waterValve();
+  waterValve(uint8_t PIN);
   void begin();
   void update(unsigned long ms);
   void open();
@@ -14,6 +14,7 @@ public:
 
 private:
   bool active;
+  uint8_t _PIN;
 
   const bool ACTIVATED = LOW;
   const bool DEACTIVATED = HIGH;

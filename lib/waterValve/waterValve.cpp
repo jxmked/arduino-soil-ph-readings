@@ -1,19 +1,19 @@
 #include "waterValve.h"
 #include <Arduino.h>
-#include "PIN_MAP.h"
 
-waterValve::waterValve():
-active(false) {
+waterValve::waterValve(uint8_t PIN) :
+  active(false),
+  _PIN(PIN) {
 
 }
 
 void waterValve::begin() {
-  pinMode(SOLENOID_VALVE_PIN, OUTPUT);
-  digitalWrite(SOLENOID_VALVE_PIN, DEACTIVATED);
+  pinMode(_PIN, OUTPUT);
+  digitalWrite(_PIN, DEACTIVATED);
 }
 
 void waterValve::update(unsigned long ms) {
-    digitalWrite(SOLENOID_VALVE_PIN, active ? ACTIVATED : DEACTIVATED);
+  digitalWrite(_PIN, active ? ACTIVATED : DEACTIVATED);
 }
 
 void waterValve::close() {
