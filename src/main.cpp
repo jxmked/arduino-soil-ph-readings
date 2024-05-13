@@ -17,6 +17,10 @@ waterValve wav(PIN_MAP.SOLENOID_VALVE_PIN);
 
 TimeInterval phInterval(3000, 0, true);
 
+
+// Switching...
+TimeInterval pingpong(3000, 0, true);
+
 void setup() {
 
   /**
@@ -35,10 +39,13 @@ void setup() {
   // Bottom-Right
   lcd.setCursor(8, 1);
   lcd.print("Loading.");
+  
+  als.setMinMaxServoRot(MIN_SERVO_ROT, MAX_SERVO_ROT);
 
   phs.begin();
   als.begin();
   wav.begin();
+
 
   delay(3000);
 
@@ -108,5 +115,14 @@ void loop() {
     lcd.print("Normal");
     wav.close();
     als.close();
+
+
+
+
+    if(pingpong.marked(1000)) {
+      als.open();
+    } else {
+      wav.open();
+    }
   }
 }

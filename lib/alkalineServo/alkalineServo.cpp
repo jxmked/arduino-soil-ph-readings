@@ -3,10 +3,12 @@
 #include <Servo.h>
 
 alkalineServo::alkalineServo(uint8_t PIN) :
+  rotation(0),
   active(false),
-  lastState(false),
   servo(),
-  _PIN(PIN) { }
+  _PIN(PIN),
+  OPEN(0),
+  CLOSED(0) { }
 
 
 void alkalineServo::begin() {
@@ -15,12 +17,10 @@ void alkalineServo::begin() {
 }
 
 void alkalineServo::update(unsigned long ms) {
-  // if(active == lastState) return;
-
   servo.write(active ? OPEN : CLOSED);
-
-  lastState = active;
+  rotation = servo.read();
 }
+
 
 void alkalineServo::open() {
   active = true;
@@ -30,3 +30,7 @@ void alkalineServo::close() {
   active = false;
 }
 
+void alkalineServo::setMinMaxServoRot(int m, int x) {
+  CLOSED = m;
+  OPEN = x;
+}

@@ -11,17 +11,19 @@ public:
   void update(unsigned long ms);
   void open();
   void close();
+  void setMinMaxServoRot(int m, int x);
+  int rotation;
+
 
 
 private:
   bool active;
-  bool lastState;
   Servo servo;
   uint8_t _PIN;
+  int OPEN;
+  int CLOSED;
 
-  // Jittering issue. Let it jitter when open. :)
-  const int OPEN = 0;
-  const int CLOSED = 180;
+
 
 };
 
