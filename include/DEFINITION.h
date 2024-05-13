@@ -14,7 +14,7 @@
 
 #define SERVO_INTERVAL 1 // Sec
 
-#define MAX_SERVO_ROT 20 // degree
+#define MAX_SERVO_ROT 30 // degree
 
 #define MIN_SERVO_ROT 0 // Degree
 

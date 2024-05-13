@@ -39,7 +39,7 @@ void setup() {
   // Bottom-Right
   lcd.setCursor(8, 1);
   lcd.print("Loading.");
-  
+
   als.setMinMaxServoRot(MIN_SERVO_ROT, MAX_SERVO_ROT);
 
   phs.begin();
@@ -116,10 +116,7 @@ void loop() {
     wav.close();
     als.close();
 
-
-
-
-    if(pingpong.marked(1000)) {
+    if(pingpong.marked(1500)) {
       als.open();
     } else {
       wav.open();
