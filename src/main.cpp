@@ -88,7 +88,7 @@ void loop() {
   float phVal = 0.0;
 
   if (digitalRead(9) == LOW) {
-    const float potVal = float(analogRead(A0)) / 1023;
+    const volatile float potVal = float(analogRead(A0)) / 1023.0;
     phVal = (2 * potVal) + 5;
   } else {
     phVal = phs.read();
@@ -113,13 +113,13 @@ void loop() {
   } else {
     lcd.setCursor(5, 1);
     lcd.print("Normal");
-    wav.close();
-    als.close();
 
-    if(pingpong.marked(1500)) {
+    if (pingpong.marked(1000)) {
       als.open();
+      wav.close();
     } else {
       wav.open();
+      als.close();
     }
   }
 }

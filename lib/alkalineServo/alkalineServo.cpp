@@ -34,3 +34,4 @@ void alkalineServo::setMinMaxServoRot(int m, int x) {
   CLOSED = m;
   OPEN = x;
 }
+
