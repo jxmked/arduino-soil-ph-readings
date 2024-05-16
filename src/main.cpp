@@ -22,7 +22,6 @@ TimeInterval phInterval(3000, 0, true);
 TimeInterval pingpong(3000, 0, true);
 
 void setup() {
-
   /**
    * You can put potentiometer at pin A0
    * to create fake value of soil ph value.

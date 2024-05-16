@@ -24,7 +24,7 @@ void phSensor::begin() {
   pinMode(MB, OUTPUT);
 
 
-  BUSMode(false);
+  BUSMode(LOW);
 
 }
 
@@ -34,13 +34,13 @@ bool phSensor::isAvailable() {
 }
 
 void phSensor::update(unsigned long ms) {
-  BUSMode(true);
+  BUSMode(HIGH);
 
   delay(10);
 
   if (sSerial.write(TX_DATA, sizeof(TX_DATA)) == 8) {
 
-    BUSMode(false);
+    BUSMode(LOW);
     delay(10);
 
 
@@ -58,12 +58,7 @@ float phSensor::read() {
   return float(values[4]) / 10;
 }
 
-void phSensor::BUSMode(bool isHigh) {
-  if (isHigh) {
-    digitalWrite(MA, HIGH);
-    digitalWrite(MB, HIGH);
-  } else {
-    digitalWrite(MA, LOW);
-    digitalWrite(MB, LOW);
-  }
+void phSensor::BUSMode(uint8_t v) {
+    digitalWrite(MA, v);
+    digitalWrite(MB, v);
 }

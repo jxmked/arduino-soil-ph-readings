@@ -36,7 +36,7 @@ private:
   uint8_t MB;
   int BAUD_RATE;
 
-  void BUSMode(bool isHigh);
+  void BUSMode(uint8_t v);
 
 };
 
