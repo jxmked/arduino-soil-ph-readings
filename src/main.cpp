@@ -27,10 +27,10 @@ void setup() {
    * to create fake value of soil ph value.
    * Its useful for demonstration.
    *
-   * Just put some connection between negative and pin 9
+   * Just put some connection between negative and pin 2
    * to activate.
   */
-  pinMode(9, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
 
   lcd.begin(16, 2);
   lcd.backlight();
@@ -86,7 +86,7 @@ void loop() {
 
   float phVal = 0.0;
 
-  if (digitalRead(9) == LOW) {
+  if (digitalRead(4) == LOW) {
     const volatile float potVal = float(analogRead(A0)) / 1023.0;
     phVal = (2 * potVal) + 5;
   } else {
