@@ -38,7 +38,7 @@ void phSensor::update(unsigned long ms) {
 
   delay(10);
 
-  if (sSerial.write(TX_DATA, sizeof(TX_DATA)) == 8) {
+  if (sSerial.write(TX_DATA, sizeof(TX_DATA)) >= sizeof(TX_DATA)) {
 
     BUSMode(LOW);
     delay(10);
