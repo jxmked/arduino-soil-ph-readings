@@ -36,21 +36,25 @@ bool phSensor::isAvailable() {
 void phSensor::update(unsigned long ms) {
   BUSMode(HIGH);
 
-  delay(10);
+  delay(100);
+
+  sSerial.listen();
 
   if (sSerial.write(TX_DATA, sizeof(TX_DATA)) >= sizeof(TX_DATA)) {
+    sSerial.flush();
+
 
     BUSMode(LOW);
-    delay(10);
+    delay(100);
 
 
-      for (byte i = 0; i < 11; i++) {
-        values[i] = sSerial.read();
-        Serial.print(values[i], HEX);
+    for (byte i = 0; i < 11; i++) {
+      values[i] = sSerial.read();
+      Serial.print(values[i], HEX);
 
-      }
+    }
 
-      Serial.println();
+    Serial.println();
   }
 }
 
@@ -59,6 +63,6 @@ float phSensor::read() {
 }
 
 void phSensor::BUSMode(uint8_t v) {
-    digitalWrite(MA, v);
-    digitalWrite(MB, v);
+  digitalWrite(MA, v);
+  digitalWrite(MB, v);
 }

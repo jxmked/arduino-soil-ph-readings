@@ -3,7 +3,7 @@
 
 
 
-#define MODBUS_BAUD_RATE 2400
+#define MODBUS_BAUD_RATE 4800
 
 
 #define ACIDIC_THRESHOLD 6.2 // Below 6.2, Too much acidity
